@@ -3,17 +3,25 @@ package com.example.tdd.chap01;
 public class PasswordStrengthMeter {
     public PasswordStrength meter(String s) {
         if(s == null || s.isEmpty()) return PasswordStrength.INVALID;
-        boolean lengthEnough = s.length() >= 8;
-        boolean containNumber = meetsContainingNumberCriteria(s);
-        boolean containUpp = meetsContainingUppercaseCriteria(s);
+        int metCounts = getMetCriteriaCounts(s);
 
-        if(lengthEnough && !containNumber && !containUpp) return PasswordStrength.WEAK;
-
-        if(!lengthEnough) return PasswordStrength.NORMAL;
-        if(!containNumber) return PasswordStrength.NORMAL;
-        if(!containUpp) return PasswordStrength.NORMAL;
+        if(metCounts <= 1) return PasswordStrength.WEAK;
+        if(metCounts == 2) return PasswordStrength.NORMAL;
 
         return PasswordStrength.STRONG;
+    }
+
+    private int getMetCriteriaCounts(String s) {
+        int metCounts = 0;
+        boolean lengthEnough = s.length() >= 8;
+        if(lengthEnough) metCounts++;
+        boolean containNumber = meetsContainingNumberCriteria(s);
+        if(containNumber) metCounts++;
+        boolean containUpp = meetsContainingUppercaseCriteria(s);
+        if(containUpp) metCounts++;
+
+        return metCounts;
+
     }
 
     private boolean meetsContainingUppercaseCriteria(String s) {
