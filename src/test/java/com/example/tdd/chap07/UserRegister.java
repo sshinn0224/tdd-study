@@ -3,10 +3,12 @@ package com.example.tdd.chap07;
 public class UserRegister {
     private WeakPasswordChecker passwordChecker;
     private UserRepository userRepository;
+    private EmailNotifier emailNotifier;
 
-    public UserRegister(WeakPasswordChecker passwordChecker, UserRepository userRepository) {
+    public UserRegister(WeakPasswordChecker passwordChecker, UserRepository userRepository, EmailNotifier emailNotifier) {
         this.passwordChecker = passwordChecker;
         this.userRepository = userRepository;
+        this.emailNotifier = emailNotifier;
     }
 
     public void register(String id, String password, String email) {
@@ -19,5 +21,7 @@ public class UserRegister {
         }
 
         userRepository.save(new User(id, password, email));
+
+        emailNotifier.sendRegisterEmail(email);
     }
 }
